@@ -1,12 +1,17 @@
 import { createOpenAI } from '@ai-sdk/openai'
 import { streamText } from 'ai'
 
-export const maxDuration = 60 // This function can run for a maximum of 5 secondsexport const dynamic = 'force-dynamic';
+export const maxDuration = 60 // This function can run for a maximum of 60 seconds
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
 	const { apiKey, messages, model, systemPrompt } = await req.json()
-	const openai = createOpenAI({ apiKey })
+
+	// Set the baseURL for the API requests
+	const openai = createOpenAI({
+		apiKey,
+		baseURL: "https://openrouter.ai/api/v1"
+	})
 
 	const result = await streamText({
 		model: openai(model),
